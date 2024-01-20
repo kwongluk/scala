@@ -1,0 +1,33 @@
+#download
+curl -L https://www.scala-sbt.org/sbt-rpm.repo > sbt-rpm.repo
+
+#move repo to /etc/yum.repos.d/
+sudo mv sbt-rpm.repo /etc/yum.repos.d/
+
+# view content
+cat /etc/yum.repos.d/sbt-rpm.repo
+[sbt-rpm]
+name=sbt-rpm
+baseurl=https://repo.scala-sbt.org/scalasbt/rpm
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1
+
+#sync from scala repo
+reposync -p /opt/sbt-installer --download-metadata --repo=sbt-rpm
+
+# copy the downloaded file to server 
+cp -r xxxxx /opt/sbt-repo
+
+#create local repo on target server
+vi /etc/yum.repos.d/sbt-rpm.repo
+[sbt-rpm]
+name=sbt-rpm
+baseurl=///opt/sbt-rpm
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1
+
+# Install specific version on target server
+yum install sbt-1.9.7
+
